@@ -6,7 +6,7 @@ Adjust the input_channels[] list to your situation.
 
 Based on the Livewire Routing protocol client written by Anthony Eden available on Github:
 https://github.com/anthonyeden/Livewire-Routing-Protocol-Client
-you need to copy these files to the same location where the xnode-matrix-control.pyw resides.
+you need to copy the 2 .py files from this project to the same location where the xnode-matrix-control.pyw resides.
 
 Disclaimer: 
 Do not use on LIVE On Air equipment without first testing it. A single button click can make your station silent.
