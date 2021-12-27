@@ -6,7 +6,7 @@ from functools import partial
 from LWRPClient import LWRPClient
 
 input_channels = {  # list of channel names and numbers in xnode matrix
-    'NonStop PC':   6,
+    'NonStop PC':   1,
     'Studio 1': 5,
     'Studio 2': 7,
     'Sonobus Feed': 13,
@@ -33,9 +33,22 @@ def matrixCallback(data):
     # data is a list of connections
     for d in data:
         dest=d["dst"]
-        source=d["src"]
-        print (dest," ", source)
-        lbl_textlabel["text"]=f"{dest} {source}"
+        source=d["src"]  # source is again a list of sources
+        # print (dest," ", source)
+        
+        for src in source:
+            srcnum=src["num"]
+            for inp, inp_ch in input_channels.items():
+                if srcnum == inp_ch:
+                    print(f"{dest}L - srcnum: {srcnum}")
+                    txt_text.insert(tk.END, f"{dest}L: {srcnum} - MATCH\n")
+                    btn_conn[inp_ch]["background"]="orange"
+
+                if srcnum == inp_ch+1:
+                    print(f"{dest}L - srcnum: {srcnum}")
+                    txt_text.insert(tk.END, f"{dest}R: {srcnum} - MATCH\n")
+
+
 
 def xnode_connect():
     LWRP.login()
@@ -50,8 +63,11 @@ def xnode_connect_input(srcchan : int, dstchan: int):
     LWRP.matrixSet((dstchan+1),(srcchan+1),-30) # Right
 
 def xnode_disconnect_input(srcchan : int, dstchan : int):
+    if srcchan==0 or dstchan==0:
+        return
     LWRP.matrixSet(dstchan,srcchan,"-")
     LWRP.matrixSet(dstchan+1,(srcchan+1),"-")
+    btn_conn[srcchan]["background"]="green"
 
 def xnode_stop():
     LWRP.stop()
@@ -88,12 +104,9 @@ for channel_name, channel_nr in input_channels.items():
     btn_disc[channel_nr].grid(column=1, row=rownr, padx=5, pady=5, sticky="ew")
     rownr += 1
 
-# btn_connect=tk.Button(master=fr_buttons,text="Connect xnode",relief=tk.RAISED, borderwidth=4, padx=5, pady=5, command=xnode_connect)
-# btn_connect.grid(column=1,row=rownr)
 
-
-lbl_textlabel=tk.Label(master=fr_text, text="Matrix callbacks")
-lbl_textlabel.grid(column=0,row=1, columnspan=2)
+txt_text=tk.Text(master=fr_text, padx=5, pady=5)
+txt_text.grid(column=0,row=1, columnspan=2, sticky="ew")
 
 fr_text.grid(row=1, column=0, columnspan=2, sticky="nsew")
 
