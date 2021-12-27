@@ -2,6 +2,7 @@
 A simple Desktop tool to control an Axia xNode's mixer-matrix connections using LWRP, written in Python 3.
 
 To use this tool, change xnode_address (and xnode_port) to your xnode's IP address. 
+Adjust the input_channels[] list to your situation.
 
 Based on the Livewire Routing protocol client written by Anthony Eden available on Github:
 https://github.com/anthonyeden/Livewire-Routing-Protocol-Client
