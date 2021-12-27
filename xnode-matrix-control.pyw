@@ -19,7 +19,7 @@ input_channels = {  # list of channel names and numbers in xnode matrix
 
 mytitle="Simple Xnode Matrix Control"
 xnode_address="localhost"
-xnode_port=1993
+xnode_port=93
 
 # ----------------------
 LWRP = LWRPClient(xnode_address, xnode_port)
